@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.jbpm.process.instance.impl.demo.SystemOutWorkItemHandler;
+import com.sample.service.StraightThroughService;
+
 import org.junit.Test;
 
 public class StraightThroughTest {
@@ -41,7 +42,7 @@ public class StraightThroughTest {
 
 		long start = System.currentTimeMillis();
 		List<Thread> ts = new ArrayList<Thread>();
-		for (int i = 0; i < 10; i++) { 
+		for (int i = 0; i < 300; i++) { 
 			Thread t = new Thread(r);
 			t.start();
 			ts.add(t);
@@ -49,7 +50,7 @@ public class StraightThroughTest {
 		for (Thread t: ts) {
 			t.join();
 		}
-		System.out.println(System.currentTimeMillis() - start);
+		System.out.println(" == Execution time, Java API:" + (System.currentTimeMillis() - start));
     }
     
 }

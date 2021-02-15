@@ -1,4 +1,4 @@
-<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:drools="http://www.jboss.org/drools" id="_eENPIFEJEDmBxPP5Fbx0Gg" exporter="jBPM Process Modeler" exporterVersion="2.0" targetNamespace="http://www.omg.org/bpmn20">
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:drools="http://www.jboss.org/drools" id="_hF5kEUnuEDm6s9Xe1UalmQ" exporter="jBPM Process Modeler" exporterVersion="2.0" targetNamespace="http://www.omg.org/bpmn20">
   <bpmn2:process id="sample-process" drools:packageName="com.example" drools:version="1.0" drools:adHoc="false" name="new-file" isExecutable="true" processType="Public">
     <bpmn2:sequenceFlow id="_84FC12DE-266F-4A24-AE44-5ED8F082BED0" sourceRef="_3A819E9C-2B9B-4AF0-951C-BF9878C2178E" targetRef="_856B7A60-F906-4450-A581-1C91FE9E552E">
       <bpmn2:extensionElements>
@@ -43,7 +43,7 @@
     <bpmn2:endEvent id="_856B7A60-F906-4450-A581-1C91FE9E552E">
       <bpmn2:incoming>_84FC12DE-266F-4A24-AE44-5ED8F082BED0</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:scriptTask id="_3A819E9C-2B9B-4AF0-951C-BF9878C2178E" name="Task3" scriptFormat="http://www.java.com/java">
+    <bpmn2:task id="_3A819E9C-2B9B-4AF0-951C-BF9878C2178E" drools:taskName="Service">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
           <drools:metaValue><![CDATA[Task3]]></drools:metaValue>
@@ -51,9 +51,8 @@
       </bpmn2:extensionElements>
       <bpmn2:incoming>_1C403745-1A14-4221-90CE-DAFD7155CCCB</bpmn2:incoming>
       <bpmn2:outgoing>_84FC12DE-266F-4A24-AE44-5ED8F082BED0</bpmn2:outgoing>
-      <bpmn2:script> System.out.println("test");</bpmn2:script>
-    </bpmn2:scriptTask>
-    <bpmn2:scriptTask id="_D7EC6E30-7E38-4D87-94D1-38CE6B804200" name="Task2" scriptFormat="http://www.java.com/java">
+    </bpmn2:task>
+    <bpmn2:task id="_D7EC6E30-7E38-4D87-94D1-38CE6B804200" drools:taskName="Service">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
           <drools:metaValue><![CDATA[Task2]]></drools:metaValue>
@@ -61,9 +60,8 @@
       </bpmn2:extensionElements>
       <bpmn2:incoming>_624CCD7A-963A-4782-A4D3-A9F2542EED14</bpmn2:incoming>
       <bpmn2:outgoing>_1C403745-1A14-4221-90CE-DAFD7155CCCB</bpmn2:outgoing>
-      <bpmn2:script> System.out.println("test");</bpmn2:script>
-    </bpmn2:scriptTask>
-    <bpmn2:scriptTask id="_52920EDA-3204-4F8C-B2E6-F10D3C5DF3CD" name="Task1" scriptFormat="http://www.java.com/java">
+    </bpmn2:task>
+    <bpmn2:task id="_52920EDA-3204-4F8C-B2E6-F10D3C5DF3CD" drools:taskName="Service">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
           <drools:metaValue><![CDATA[Task1]]></drools:metaValue>
@@ -71,14 +69,13 @@
       </bpmn2:extensionElements>
       <bpmn2:incoming>_051FB79F-C7C5-426F-8828-AB5EC435FAC8</bpmn2:incoming>
       <bpmn2:outgoing>_624CCD7A-963A-4782-A4D3-A9F2542EED14</bpmn2:outgoing>
-      <bpmn2:script> System.out.println("test");</bpmn2:script>
-    </bpmn2:scriptTask>
+    </bpmn2:task>
     <bpmn2:startEvent id="_57ECFC71-8241-4A0A-976F-813F5DF80ECB">
       <bpmn2:outgoing>_051FB79F-C7C5-426F-8828-AB5EC435FAC8</bpmn2:outgoing>
     </bpmn2:startEvent>
   </bpmn2:process>
   <bpmndi:BPMNDiagram>
-    <bpmndi:BPMNPlane bpmnElement="sample-process">
+    <bpmndi:BPMNPlane bpmnElement="new-file">
       <bpmndi:BPMNShape id="shape__57ECFC71-8241-4A0A-976F-813F5DF80ECB" bpmnElement="_57ECFC71-8241-4A0A-976F-813F5DF80ECB">
         <dc:Bounds height="56" width="56" x="215" y="135"/>
       </bpmndi:BPMNShape>
@@ -187,7 +184,7 @@
         </bpsim:Scenario>
       </bpsim:BPSimData>
     </bpmn2:extensionElements>
-    <bpmn2:source>_eENPIFEJEDmBxPP5Fbx0Gg</bpmn2:source>
-    <bpmn2:target>_eENPIFEJEDmBxPP5Fbx0Gg</bpmn2:target>
+    <bpmn2:source>_hF5kEUnuEDm6s9Xe1UalmQ</bpmn2:source>
+    <bpmn2:target>_hF5kEUnuEDm6s9Xe1UalmQ</bpmn2:target>
   </bpmn2:relationship>
 </bpmn2:definitions>

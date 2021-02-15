@@ -1,4 +1,4 @@
-package com.sample;
+package com.sample.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +24,9 @@ public class StraightThroughService {
 	public Map<String, Object> startProcess(String processId, Map<String, Object> params) {
 		ksession.getWorkItemManager().registerWorkItemHandler("Service", new WorkItemHandler() {
 			public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-//				System.out.println("Execution workItem " + workItem);
+				//System.out.println("Execution workItem " + workItem);
 				try {
-					Thread.sleep(500);
+					Thread.sleep(300);
 				} catch (Throwable t) {
 					// do nothing
 				}
