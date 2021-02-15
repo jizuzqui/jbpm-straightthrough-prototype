@@ -35,7 +35,7 @@ public class StraightThroughService {
 			public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
 			}
 		});
-		WorkflowProcessInstanceImpl p = (WorkflowProcessInstanceImpl) ksession.startProcess("sample-process", params);
+		WorkflowProcessInstanceImpl p = (WorkflowProcessInstanceImpl) ksession.startProcess(processId, params);
 		return p.getVariables();
 	}
 

@@ -16,49 +16,45 @@
 
 package com.sample;
 
-import java.io.IOException;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import com.sample.service.StraightThroughService;
-
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class ProcessEndpointTest {
 
-    @Test()
+    private HttpPost httpPost;
+
+	@Test()
     public void testProcessEndpoint() throws Exception {
-
-    HttpResponse response = HttpClientBuilder.create().build().execute( new HttpGet( "http://localhost:8080/jbpm-test-1.0.0-SNAPSHOT/rest/process"));
-    Assert.assertNotNull(response);
-
-        Runnable r = new Runnable() {
+        try {
+            httpPost = new HttpPost( "http://localhost:8080/jbpmsample/rest/processes/sample-process");
+            HttpClientBuilder.create().build().execute(httpPost); 
+            
+            Runnable r = new Runnable() {
                 public void run() {
                     int counter = 0;
                     while (counter < 10) {
                         try {
-							HttpClientBuilder.create().build().execute( new HttpGet( "http://localhost:8080/jbpm-test-1.0.0-SNAPSHOT/rest/process"));
-						} catch (Exception e) {
-							e.printStackTrace();
-						} 
+                            HttpClientBuilder.create().build().execute(httpPost);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } 
                         counter++;
                     }
                 }
-
             };
 
             long start = System.currentTimeMillis();
             List<Thread> ts = new ArrayList<Thread>();
-            for (int i = 0; i < 300; i++) { 
+            for (int i = 0; i < 200; i++) { 
                 Thread t = new Thread(r);
                 t.start();
                 ts.add(t);
@@ -66,9 +62,17 @@ public class ProcessEndpointTest {
             for (Thread t: ts) {
                 t.join();
             }
-
+            System.out.println(" == ");
             System.out.println(" == Execution time, REST API:" + (System.currentTimeMillis() - start));
+            System.out.println(" == ");
+
+        } catch (Exception e) {
+            Assert.fail("Could not connect to localhost server");
         }
+
+        
+        
+    }
 
 }
     

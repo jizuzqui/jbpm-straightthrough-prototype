@@ -42,7 +42,8 @@ public class StraightThroughTest {
 
 		long start = System.currentTimeMillis();
 		List<Thread> ts = new ArrayList<Thread>();
-		for (int i = 0; i < 300; i++) { 
+		// reduced from 10.000 to 200, so both tests can run with the name number of threads
+		for (int i = 0; i < 200; i++) { 
 			Thread t = new Thread(r);
 			t.start();
 			ts.add(t);
@@ -50,7 +51,9 @@ public class StraightThroughTest {
 		for (Thread t: ts) {
 			t.join();
 		}
+		System.out.println(" == ");
 		System.out.println(" == Execution time, Java API:" + (System.currentTimeMillis() - start));
+		System.out.println(" == ");
     }
     
 }

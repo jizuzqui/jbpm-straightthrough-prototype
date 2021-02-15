@@ -96,7 +96,7 @@
       <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
-    
+
     <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
@@ -126,8 +126,9 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
-            <version>2.6</version>
+            <version>3.2.3</version>
             <configuration>
+                <warName>jbpmsample</warName>
                 <failOnMissingWebXml>false</failOnMissingWebXml>
             </configuration>
         </plugin>
