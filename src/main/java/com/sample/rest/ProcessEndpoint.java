@@ -12,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.sample.service.StraightThroughService;
 
@@ -26,13 +27,14 @@ public class ProcessEndpoint {
 
     @Inject
     StraightThroughService straightThroughService;
+	private Map<String, Object> processResult;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Map<String, Object> startProcess(@PathParam("processId") String processId) {
-       // log.fine("Starting process with ID: "+processId);
-        return straightThroughService.startProcess(processId, Collections.emptyMap());
+    public Response startProcess(@PathParam("processId") String processId) {
+        processResult = straightThroughService.startProcess(processId, Collections.emptyMap());
+        return Response.ok(processResult).build();
     }
     
 }

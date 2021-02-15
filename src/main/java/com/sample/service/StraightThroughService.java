@@ -21,9 +21,12 @@ public class StraightThroughService {
 		 ksession = kcontainer.getKieBase("kbase").newKieSession();
 	}
 	
+	
 	public Map<String, Object> startProcess(String processId, Map<String, Object> params) {
 		ksession.getWorkItemManager().registerWorkItemHandler("Service", new WorkItemHandler() {
-			public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
+	
+		// This method "executeWorkItem" registers a task in the process that takes 300ms to finish;
+		public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 				//System.out.println("Execution workItem " + workItem);
 				try {
 					Thread.sleep(300);
@@ -35,6 +38,7 @@ public class StraightThroughService {
 			public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
 			}
 		});
+		
 		WorkflowProcessInstanceImpl p = (WorkflowProcessInstanceImpl) ksession.startProcess(processId, params);
 		return p.getVariables();
 	}

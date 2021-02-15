@@ -16,36 +16,67 @@
 
 package com.sample;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import com.sample.rest.ProcessEndpoint;
+import com.sample.service.StraightThroughService;
+
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Assert;
 import org.junit.Test;
 
+//@RunWith(Arquillian.class)
 public class ProcessEndpointTest {
 
-    private HttpPost httpPost;
+    private HttpPost httpPost = new HttpPost( "http://localhost:8080/jbpm-prototype/rest/processes/sample-process");
+
+    static File[] files = Maven.resolver().loadPomFromFile("pom.xml")
+        .importRuntimeDependencies().resolve().withTransitivity().asFile();
+        
+    @Deployment
+    public static Archive<?> createTestArchive() {
+        return ShrinkWrap.create(WebArchive.class, "jbpm-prototype.war")
+            .addClasses(ProcessEndpoint.class, StraightThroughService.class, HttpUriRequest.class, HttpRequest.class)
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml").addAsLibraries(files);
+    }
 
 	@Test()
     public void testProcessEndpoint() throws Exception {
         try {
-            httpPost = new HttpPost( "http://localhost:8080/jbpmsample/rest/processes/sample-process");
-            HttpClientBuilder.create().build().execute(httpPost); 
-            
+            CloseableHttpResponse execute = HttpClientBuilder.create().build().execute(httpPost);
+            assertEquals(200, execute.getStatusLine().getStatusCode());
+        } catch (Exception e) {
+            fail("Exception when trying HTTP Request: "+ e.getMessage());
+        } 
+    } 
+
+	@Test()
+    public void checkPerformanceProcessEndpoint() throws Exception {
+        try {           
             Runnable r = new Runnable() {
                 public void run() {
                     int counter = 0;
                     while (counter < 10) {
                         try {
-                            HttpClientBuilder.create().build().execute(httpPost);
+                            CloseableHttpResponse execute = HttpClientBuilder.create().build().execute(httpPost);
+                            assertEquals(200, execute.getStatusLine().getStatusCode());
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            fail("Exception when running HTTP Request"+ e.getCause());
                         } 
                         counter++;
                     }
@@ -75,4 +106,3 @@ public class ProcessEndpointTest {
     }
 
 }
-    
