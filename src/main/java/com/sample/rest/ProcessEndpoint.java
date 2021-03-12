@@ -21,7 +21,7 @@ import com.sample.service.StraightThroughService;
  * ProcessEndpoint
  */
 
-@Path("/processes/{processId}")
+@Path("/business-process-management/v1/process-models/{processId}/versions/{version}:instance")
 @RequestScoped
 public class ProcessEndpoint {
 
@@ -32,7 +32,7 @@ public class ProcessEndpoint {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response startProcess(@PathParam("processId") String processId) {
+    public Response startProcess(@PathParam("processId") String processId, @PathParam("version") String version) {
         processResult = straightThroughService.startProcess(processId, Collections.emptyMap());
         return Response.ok(processResult).build();
     }
