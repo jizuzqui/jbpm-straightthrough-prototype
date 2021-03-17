@@ -4,7 +4,7 @@ This app can be packaged and deployed as a war file in EAP 7.3.
 
 - It currently allows starting a process by sending the process definition (processDefinitionId). A new process instance for this process definition will be starte. Example:
     ````
-    POST http://localhost:8080/jbpmsample/rest/processes/{processId}
+    POST http://localhost:8080/services/rest/business-process-management/v1/process-models/{processId}/versions/{version}:instance
     ````
 - The api currently does not accept input parameters 
 - Tests are WIP (Arquillian is not enabled yet)
