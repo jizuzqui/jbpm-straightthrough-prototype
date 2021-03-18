@@ -11,7 +11,24 @@ This app can be packaged and deployed as a war file in EAP 7.3.
 
 **Package and deploy**
 
-`$ mvn clean package -DskipTests && cp target/jbpm-prototype.war $JBOSS_HOME/standalone/deployments/ && touch $JBOSS_HOME/standalone/deployments/jbpmsample.war.dodeploy`
+There is a Makefile to build the app and the docker image.
+
+```sh
+
+make run_local # for runing in local
+
+make test # for testing
+
+make build # for building the app
+
+make run # for runing the docker image
+
+make image # for making the image globaldevtools.bbva.com:5000/hub/bpmaas/custom/orchestrator:latest
+
+make push # for pushing to bbva private registry
+
+
+```
 
 
 **Tests**
