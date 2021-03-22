@@ -55,6 +55,7 @@ public class StraightThroughService {
 
 	private void sendGET(String url) throws IOException {
 
+
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection(Proxy.NO_PROXY);
 
@@ -64,22 +65,32 @@ public class StraightThroughService {
 		int responseCode = con.getResponseCode();
 		System.out.println("GET Response Code :: " + responseCode);
 
-		if (responseCode == HttpURLConnection.HTTP_OK) { // success
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					con.getInputStream()));
+		if (responseCode == HttpURLConnection.HTTP_OK) {
+			// success
+			InputStreamReader ir = new InputStreamReader(con.getInputStream());
+			BufferedReader in = new BufferedReader(ir);
 			String inputLine;
 			StringBuffer response = new StringBuffer();
 
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 			}
+
+			ir.close();
 			in.close();
+
+			ir=null;
+			in=null;
 
 			// print result
 			System.out.println(response.toString());
 		} else {
 			System.out.println("GET request not worked ResponseCode:"+responseCode + "message: "+con.getErrorStream());
 		}
+
+		con.disconnect();
+		con=null;
+
 
 	}
 
