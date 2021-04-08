@@ -12,10 +12,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.sample.service.StraightThroughService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 /**
@@ -31,8 +33,11 @@ public class ProcessEndpoint {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response startProcess(@PathParam("processId") String processId, @PathParam("version") String version) {
-        processResult = straightThroughService.startProcess(processId, Collections.emptyMap());
+    public Response startProcess(@PathParam("processId") String processId, @PathParam("version") String version, @RequestBody Map<String, Object> payload) {
+        
+    	
+    	//processResult = straightThroughService.startProcess(processId, Collections.emptyMap());
+    	processResult = straightThroughService.startProcess(processId, payload);
         return Response.ok(processResult).build();
     }
     
