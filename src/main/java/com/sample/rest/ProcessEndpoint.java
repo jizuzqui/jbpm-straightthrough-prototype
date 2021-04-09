@@ -1,5 +1,6 @@
 package com.sample.rest;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -37,7 +38,12 @@ public class ProcessEndpoint {
         
     	
     	//processResult = straightThroughService.startProcess(processId, Collections.emptyMap());
-    	processResult = straightThroughService.startProcess(processId, payload);
+    	try {
+			processResult = straightThroughService.startProcess(processId, payload);
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return Response.ok(processResult).build();
     }
     

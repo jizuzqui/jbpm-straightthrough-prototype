@@ -11,12 +11,14 @@ import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.jbpm.workflow.instance.impl.WorkflowProcessInstanceImpl;
+import org.json.JSONObject;
 import org.kie.api.KieServices;
 import org.kie.api.builder.ReleaseId;
 import org.kie.api.runtime.KieContainer;
@@ -29,8 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
 
+import es.bbva.dhbemrcu.protech_process.DatosProceso;
 import javassist.expr.NewArray;
 
 @Service
@@ -91,25 +96,32 @@ public class StraightThroughService {
 		}
 	}
 
-	public Map<String, Object> startProcess(String processId, Map<String, Object> params) {
+	public Map<String, Object> startProcess(String processId, Map<String, Object> params) throws ClassNotFoundException, IOException {
 		
 		
 		System.out.println("************ Tamaño de la entrada: "+params.size());
 		
-		for (Map.Entry entry : params.entrySet())
-		{
-		    System.out.println("key: " + entry.getKey() + "; value: " + entry.getValue());
-		}
+		Map<String, Object> paramsAux = transformBody(params);
 		
 		
-		WorkflowProcessInstanceImpl p = (WorkflowProcessInstanceImpl) ksession.startProcess(processId, params);
+		//////Metemos el body a fuego
+		/*params = new HashMap<String, Object>();
+		es.bbva.dhbemrcu.protech_process.DatosProceso processData = new DatosProceso();
+		processData.setPath("asdfasfasdfasdfasfasdfasfasfasf");
+		params.put("processData", processData);*/
+		///////
+		
+		
+		
+		
+		WorkflowProcessInstanceImpl p = (WorkflowProcessInstanceImpl) ksession.startProcess(processId, paramsAux);
 		System.out.println(p.getId());
 		
 		return p.getVariables();
 		
 	}
 
-	private void sendGET(String url) throws IOException {
+	/*private void sendGET(String url) throws IOException {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection(Proxy.NO_PROXY);
@@ -137,7 +149,7 @@ public class StraightThroughService {
 					"GET request not worked ResponseCode:" + responseCode + "message: " + con.getErrorStream());
 		}
 
-	}
+	}*/
 	
 	@SuppressWarnings("unchecked")
 	private <T extends WorkItemHandler> T buildWorkitemHandlerInstance (String workitemhandlerIdentifier, ClassLoader classloader) 
@@ -173,6 +185,67 @@ public class StraightThroughService {
 		}
 				
 		return wihObject;
+	}
+	
+	
+	private Object getClassFromString(Class<?> clazz, String contentType, String content) throws IOException {
+    	//logger.debug("transformResult({},{},{})_init",clazz,contentType,content);
+        
+        if (contentType.toLowerCase().contains("application/json")) {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(content, clazz);
+        }
+        else {    	
+            //logger.warn("Unable to find transformer for content type '{}' to handle for content '{}'", contentType, content);
+        	
+        	System.out.println("Unable to find transformer for content type '{}' to handle for content '{}'\", contentType, content");
+        }
+        // returning RAW string
+        //logger.debug("transformResult()_end");
+        return content;
+        
+    }
+	
+	private Map<String, Object> transformBody(Map<String, Object> params) throws ClassNotFoundException, IOException{
+		
+		Map<String, Object> paramsAux = new HashMap<String, Object>();
+		
+		LinkedHashMap<String, Object> submap;
+		String keyClass = null;
+		String jsonString = null;
+		ObjectMapper objectMapper;
+		
+		for (Map.Entry entry : params.entrySet()) {//recorremos los de primera linea del body
+		    System.out.println("key: " + entry.getKey() + "; value: " + entry.getValue());
+		    
+		    if(entry.getValue().getClass().equals(LinkedHashMap.class)) {//si es de tipo linkedHashMap quiere decir que es un obejto por lo que tenemos que parsearlo
+		    	
+		    	submap = (LinkedHashMap<String, Object>) entry.getValue(); //sacamos el objeto que dice el tipo
+		    	
+		    	for (String key : submap.keySet()) {
+		    		keyClass = key;
+		    	}
+		    	
+		    	//Class<?> clazz = Class<T>.forName(keyClass);
+		    	Class<?> clazz = Class.forName(keyClass, true, Thread.currentThread().getContextClassLoader());
+		    	
+		    	objectMapper = new ObjectMapper();
+		    	String json = objectMapper.writeValueAsString(submap.get(keyClass));
+		    	
+		    	
+		    	
+		    	Object resultObject = getClassFromString(clazz, "application/json", json);
+		    	
+		    	paramsAux.put((String)entry.getKey(), resultObject);
+		    	
+		    }else {//si no es de tipo HashMap lo metemos directamente
+		    	paramsAux.put((String)entry.getKey(), entry.getValue());
+		    }
+		}
+		
+		return paramsAux;
+		
+		
 	}
 
 }
