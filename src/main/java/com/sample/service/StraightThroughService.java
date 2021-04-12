@@ -46,9 +46,9 @@ public class StraightThroughService {
 	
 	private KieSession ksession;
 	private static String KIE_DEPLOYMENT_DESCRIPTOR_PATH = "META-INF/kie-deployment-descriptor.xml";
-	private static String GROUP_ID = "process_groupId";
-	private static String ARTIFACT_ID = "process_artifactId";
-	private static String VERSION = "process_version";
+	private static String GROUP_ID = "PROCESS_GROUPID";
+	private static String ARTIFACT_ID = "PROCESS_ARTIFACTID";
+	private static String VERSION = "PROCESS_VERSION";
 	
 	/*
 	 * public StraightThroughService() { KieServices kieServices =

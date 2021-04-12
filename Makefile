@@ -1,6 +1,6 @@
 
 
-DOCKER_VERSION = 0.0.1-SNAPSHOT
+DOCKER_VERSION = 0.0.2-SNAPSHOT
 
 .PHONY: run_local
 run_local:

@@ -3,7 +3,7 @@ process_artifactId: "protech_process"
 process_version: "3.0.0-SNAPSHOT"
 
 server:
-    port: 8081
+    port: 8080
     servlet:
         context-path: /services/rest
     tomcat:

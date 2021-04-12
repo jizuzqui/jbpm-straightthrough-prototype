@@ -16,6 +16,7 @@
 
 package com.sample;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,12 @@ public class StraightThroughTest {
 			public void run() {
     			int counter = 0;
     			while (counter < 10) {
-    				service.startProcess("sample-process", Collections.emptyMap());
+    				try {
+						service.startProcess("sample-process", Collections.emptyMap());
+					} catch (ClassNotFoundException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
     				counter++;
     			}
 			}
