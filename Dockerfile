@@ -17,6 +17,7 @@ RUN mkdir /deployments \
     && chown 1001 /deployments/run-java.sh \
     && chmod 540 /deployments/run-java.sh 
 
+
 # Configure the JAVA_OPTIONS, you can add -XshowSettings:vm to also display the heap size.
 ENV JAVA_OPTIONS="-XshowSettings:vm"
 # We make four distinct layers so if there are application changes the library layers can be re-used

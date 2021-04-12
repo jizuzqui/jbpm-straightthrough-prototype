@@ -77,8 +77,11 @@ public class StraightThroughService {
 			System.out.println("Error while reading stream of kie-deployment-descriptor.xml");
 		}
 
-		KieContainer kcontainer = kieServices.newKieContainer(releaseId);
-		ksession = kcontainer.getKieBase().newKieSession();
+		// KieContainer kcontainer = kieServices.newKieContainer(releaseId);
+
+		KieContainer kcontainer = kieServices.getKieClasspathContainer();
+		// ksession = kcontainer.getKieBase().newKieSession();
+		ksession = kcontainer.getKieBase("kbase").newKieSession();
 
 		List<NamedObjectModel> ltWorkItemHandlers = descriptor.getWorkItemHandlers();
 
