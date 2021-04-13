@@ -36,7 +36,4 @@ WORKDIR /deployments
 ENTRYPOINT [ "./run-java.sh" ]
 
 
-#ENTRYPOINT ["java","org.springframework.boot.loader.JarLauncher"]
-#ENTRYPOINT [ "pwd" ]
-
 
