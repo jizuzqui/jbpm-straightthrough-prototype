@@ -15,10 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.jbpm.workflow.instance.impl.WorkflowProcessInstanceImpl;
-import org.json.JSONObject;
 import org.kie.api.KieServices;
 import org.kie.api.builder.ReleaseId;
 import org.kie.api.runtime.KieContainer;
@@ -31,12 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
 
-import es.bbva.dhbemrcu.protech_process.DatosProceso;
-import javassist.expr.NewArray;
 
 @Service
 public class StraightThroughService {
