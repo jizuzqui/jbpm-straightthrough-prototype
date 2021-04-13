@@ -1,19 +1,17 @@
 package com.sample.service;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.HttpURLConnection;
-import java.net.Proxy;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.ByteStreams;
 
 import org.jbpm.workflow.instance.impl.WorkflowProcessInstanceImpl;
 import org.kie.api.KieServices;
@@ -28,9 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.io.ByteStreams;
-
 
 @Service
 public class StraightThroughService {
@@ -40,6 +35,7 @@ public class StraightThroughService {
 	
 	private KieSession ksession;
 	private static String KIE_DEPLOYMENT_DESCRIPTOR_PATH = "META-INF/kie-deployment-descriptor.xml";
+	private static String KMODULE_PATH = "META-INF/kmodule.xml";
 	private static String GROUP_ID = "PROCESS_GROUPID";
 	private static String ARTIFACT_ID = "PROCESS_ARTIFACTID";
 	private static String VERSION = "PROCESS_VERSION";
@@ -59,10 +55,15 @@ public class StraightThroughService {
 		//cogemos el proceso
 		ReleaseId releaseId = kieServices.newReleaseId(System.getenv(GROUP_ID),System.getenv(ARTIFACT_ID), System.getenv(VERSION));
 		
+		System.out.println("***********************1111");
+		System.out.println(releaseId);
+		
 		//recuperamos el kie-deployment-descriptor del proceso
 		InputStream deploymentDescriptor = this.getClass().getClassLoader()
 				.getResourceAsStream(KIE_DEPLOYMENT_DESCRIPTOR_PATH);
 
+		
+		
 		DeploymentDescriptor descriptor = null;
 
 		try (ByteArrayInputStream input = new ByteArrayInputStream(ByteStreams.toByteArray(deploymentDescriptor))) {
@@ -71,6 +72,10 @@ public class StraightThroughService {
 			System.out.println("Error while reading stream of kie-deployment-descriptor.xml");
 		}
 		
+		System.out.println("***********"+descriptor.toString() );
+		
+		System.out.println("***********************22222");
+				
 		KieContainer kcontainer = kieServices.newKieContainer(releaseId);
 		
 		System.out.println("**************"+kcontainer.getKieBaseNames());

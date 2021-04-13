@@ -9,6 +9,10 @@ run_local:
 .PHONY: build
 build:
 	 ./mvnw clean package
+	 
+.PHONY: install
+install:
+	 ./mvnw clean install
 
 .PHONY: image
 image: 

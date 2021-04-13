@@ -20,10 +20,20 @@ RUN mkdir /deployments \
 
 # Configure the JAVA_OPTIONS, you can add -XshowSettings:vm to also display the heap size.
 ENV JAVA_OPTIONS="-XshowSettings:vm"
+ENV JAVA_MAIN_CLASS="org.springframework.boot.loader.JarLauncher"
+
 # We make four distinct layers so if there are application changes the library layers can be re-used
 COPY --chown=1001 target/*.jar /deployments/
 
 EXPOSE 8080
 USER 1001
 
-ENTRYPOINT [ "/deployments/run-java.sh" ]
+RUN cd /deployments && jar -xf spring-jbpm-test-0.0.1-SNAPSHOT.jar
+RUN rm /deployments/spring-jbpm-test-0.0.1-SNAPSHOT.jar
+
+WORKDIR /deployments
+
+ENTRYPOINT [ "./run-java.sh" ]
+
+
+
